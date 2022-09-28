@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class controlPC1 : MonoBehaviour
 {
     private float Mouvement;
@@ -11,10 +12,23 @@ public class controlPC1 : MonoBehaviour
     public BoxCollider2D _collider2D;
     public Vector2 direction;
 
+    public Animator animator;
+    int isWalkingHash;
+    int isRunningHash;
+
+    bool isWalking;
+    bool isRunning;
+
+    private void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+
+    }
+
     //public float runSpeed = 2f;
 
     /*
-    
     private bool isjumpPressed;
     public float jumpForce) = __f ;
     private int groundMask;
@@ -48,12 +62,8 @@ public class controlPC1 : MonoBehaviour
     const string punch6-pc1 = "punch6";
     const string punch7-pc1 = "punch7";
     const string punch8-pc1 = "punch8";
-    
     */
 
-    Animator animator;
-    int isWalkingHash;
-    int isRunningHash;
 
     void Start()
     {
@@ -64,14 +74,14 @@ public class controlPC1 : MonoBehaviour
         isRunningHash = Animator.StringToHash("isRunning");
     }
 
-    void ChangeAnimationState(string newState)
-    {
-        /*
-        if (currentState == newState) return;
-        animator.Play(newState);
-        currentState = newState;
-        */
-    }
+/*
+void ChangeAnimationState(string newState)
+{
+if (currentState == newState) return;
+animator.Play(newState);
+currentState = newState;
+}
+*/
 
     void Update()
     {
@@ -81,7 +91,6 @@ public class controlPC1 : MonoBehaviour
         //float run = Input.GetButtonDown("0") * _speed;
 
         _rigidbody.velocity = new Vector2(r, v);
-
 
         /*
         if (isAttackingPressed)
@@ -100,7 +109,7 @@ public class controlPC1 : MonoBehaviour
 
         bool isRunning = animator.GetBool("isRunningHash");
         bool isWalking = animator.GetBool("isWalkingHash");
-        bool forwardPressed = Input.GetKey("Horizontal");
+        bool forwardPressed = Input.GetKey("left");
         bool runPressed = Input.GetKey("0");
 
         if(isWalking && forwardPressed)
@@ -121,12 +130,21 @@ public class controlPC1 : MonoBehaviour
             animator.SetBool("isRunningHash", false);
         }
 
-
+        
 
     }
 
+//    private void Update()
+  //  {
+     
+   // }
+
     private void FixedUpdate()
     {
+
+        if (Input.GetKeyDown(KeyCode.E))
+            animator.SetTrigger("Punch");
+
         /*
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.1f, groundMask);
         if(hit.collider != null)
